@@ -7,7 +7,6 @@ import databasePart1.DatabaseHelper;
 public class Questions {
 	// Variable Declaration
 	private ArrayList<Question> question_bank;
-	
 	// Constructor
 	public Questions(DatabaseHelper database) {
 		ArrayList<Question> rs = new ArrayList<Question>();
@@ -32,6 +31,13 @@ public class Questions {
 	
 	public ArrayList<Question> getAllQuestions(){
 		return this.question_bank;
+	}
+	
+	public Question getQuestion(int question_id) {
+		Question result = null;
+		// Iterate ArrayList
+		
+		return result;
 	}
 	
 	public void filterQuestionBank() {

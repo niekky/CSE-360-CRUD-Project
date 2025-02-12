@@ -1,5 +1,7 @@
 package application;
 
+import java.util.ArrayList;
+
 public class Question {
 	private int id;
 	// Variable Declaration
@@ -7,8 +9,15 @@ public class Question {
 	private String username;
 	private String time_created;
 	private boolean resolved;
-	
 	// Constructor
+	public Question() {
+		this.id = -1;
+		this.ques_content = null;
+		this.username = null;
+		this.time_created = null;
+		this.resolved = false;
+	}
+	
 	public Question(int id, String ques_content, String username, String time_created, boolean resolved) {
 		this.id = id;
 		this.ques_content = ques_content;
@@ -40,5 +49,11 @@ public class Question {
 	
 	public void setResolved(boolean resolved_status) {
 		this.resolved = resolved_status;
+	}
+	
+	public ArrayList<Answer> getAllAnswers(){
+		ArrayList<Answer> rs = new ArrayList<Answer>();
+		
+		return rs;
 	}
 }
