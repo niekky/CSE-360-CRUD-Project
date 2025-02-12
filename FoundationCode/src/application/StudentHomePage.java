@@ -27,15 +27,23 @@ public class StudentHomePage {
 	    Label userLabel = new Label("Hello Student!");
 	    userLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
 
-	    
+	    Button discussionBtn = new Button("Go to Discussion");
 	    
 	    
 	    Button backButton = new Button("Back to Welcome screen.");
+	    
+	    discussionBtn.setOnAction(a -> {
+	    	new DiscussionMainPage(databaseHelper).show(primaryStage, user);
+	    });
+	    
+	    
 	    backButton.setOnAction(a -> {
 	    	new WelcomeLoginPage(databaseHelper).show(primaryStage, user);
         });
 
-	    VBox layout = new VBox(userLabel, backButton);
+	    
+	    
+	    VBox layout = new VBox(userLabel, discussionBtn, backButton);
 	    layout.setStyle("-fx-alignment: center; -fx-padding: 20;");
 	    
 	    Scene userScene = new Scene(layout, 800, 400);

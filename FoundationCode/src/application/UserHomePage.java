@@ -1,6 +1,7 @@
 package application;
 
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -20,14 +21,17 @@ public class UserHomePage {
     }
 
     public void show(Stage primaryStage) {
-    	VBox layout = new VBox();
-	    layout.setStyle("-fx-alignment: center; -fx-padding: 20;");
-	    
-	    // Label to display Hello user
+    	
+        // Label to display Hello user
 	    Label userLabel = new Label("Hello, " + role);
 	    userLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
 
-	    layout.getChildren().add(userLabel);
+	    // Button to go to Discussion
+	    Button discussionBtn = new Button("Go to Discussion");
+	    
+    	VBox layout = new VBox(10, userLabel, discussionBtn);
+	    layout.setStyle("-fx-alignment: center; -fx-padding: 20;");
+	    
 	    Scene userScene = new Scene(layout, 800, 400);
 
 	    // Set the scene to primary stage
