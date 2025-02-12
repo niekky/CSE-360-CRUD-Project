@@ -33,7 +33,7 @@ public class DiscussionMainPage {
 			this.author = author;
 			this.dateCreated = dateCreated;
 			this.question_id = question_id;
-			this.setResolved(resolved);
+			this.resolved = resolved;
 		}
 
 		public String getQuestion() {
@@ -172,7 +172,9 @@ public class DiscussionMainPage {
 	    discussionView.setOnMouseClicked(click -> {
 	    	if (click.getClickCount() == 2) {
 	    		DiscussionCard selectedCard = discussionView.getSelectionModel().getSelectedItem();
-	    		System.out.println(selectedCard.question);
+	    		    		
+	    		// Go to answer view of the selected question
+	    		new DiscussionAnswerPage(databaseHelper, null, selectedCard.question, selectedCard.author).show(primaryStage, user);
 	    	}
 	    });
 	    
