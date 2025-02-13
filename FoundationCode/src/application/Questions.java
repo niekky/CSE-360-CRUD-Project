@@ -7,34 +7,21 @@ import databasePart1.DatabaseHelper;
 public class Questions {
 	// Variable Declaration
 	private ArrayList<Question> question_bank;
-	
+	private DatabaseHelper database;
 	
 	// Constructor
 	public Questions(DatabaseHelper database) {
+		this.database = database;
+		
 		ArrayList<Question> rs = new ArrayList<Question>();
 		
 		// Request API to retrieve questions
-		
-		// Iterate through the polled data
-		
-		// DEV SEC
-		rs.add(new Question(1, "What is CSE360 for?", "tnguy333", "02/13/2025", false));
-		rs.add(new Question(2, "What is CSE325 for?", "tnguy444", "02/14/2025", false));
-		rs.add(new Question(3, "What the H?", "tnguy555", "02/15/2025", false));
+		rs = database.getQuestions();
 		
 		this.question_bank = rs;
 	}
 	
 	// API Functions
-	public void fetchQuestions(){
-		ArrayList<Question> rs = new ArrayList<Question>();
-		
-		// Request API to retrieve questions
-		
-		// Iterate through the polled data
-		
-		this.question_bank = rs;
-	}
 	
 	public ArrayList<Question> getAllQuestions(){
 		return this.question_bank;
@@ -53,6 +40,15 @@ public class Questions {
 	
 	public void addQuestion(Question question) {
 		this.question_bank.add(question);
+		
+		// Insert to SQL database
+		this.database.addQuestion(
+				question.getId(), 
+				question.getQuestion(), 
+				question.getUser().getUserID(), 
+				question.getTimeCreated(), 
+				question.getResolved()
+			);
 	}
 	
 	public void removeQuestion(Question question) {
@@ -60,6 +56,7 @@ public class Questions {
 		for (int i = 0; i<this.question_bank.size(); i++) {
 			Question ques = this.question_bank.get(i);
 			if (ques.getId() == question.getId()) {
+				database.deleteQuestion(this.question_bank.get(i));
 				this.question_bank.remove(i);
 			}
 		}

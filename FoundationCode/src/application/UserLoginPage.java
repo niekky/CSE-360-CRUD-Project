@@ -43,10 +43,12 @@ public class UserLoginPage {
             String userName = userNameField.getText();
             String password = passwordField.getText();
             try {
-            	User user=new User(userName, password, "");
+            	User user=new User(userName, password, "", 0);
             	
             	// Retrieve the user's role from the database using userName
             	String role = databaseHelper.getUserRole(userName);
+            	int user_id = databaseHelper.getUserID(userName);
+            	user.setUserID(user_id);
             	
             	if(role!=null) {
             		user.setRole(role);

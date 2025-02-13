@@ -49,7 +49,7 @@ public class DiscussionAnswerPage {
 	    // Label to display page question header
 	    Label questionLabel = new Label("Question: " + this.question.getQuestion());
 	    questionLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-	    Label authorLabel = new Label("Posted by: " + this.question.getUsername());
+	    Label authorLabel = new Label("Posted by: " + this.question.getUser().getUserName());
 	    authorLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
 	    Label dateLabel = new Label("Created on: ");
 	    dateLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");

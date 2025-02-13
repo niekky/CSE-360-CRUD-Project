@@ -6,6 +6,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
+import java.util.Random;
 
 import databasePart1.*;
 
@@ -118,7 +119,7 @@ public class SetupAccountPage {
                     if(databaseHelper.validateInvitationCode(code)) {
                     
                         // Create a new user and register them in the database
-                        User user = new User(userName, password, typeOfRole);
+                        User user = new User(userName, password, typeOfRole, new Random().nextInt(100));
                         databaseHelper.register(user);
                         
                         // going to the corresponding role page

@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.UUID;
 
+import application.Question;
+import application.Questions;
 import application.User;
 
 
@@ -92,11 +95,12 @@ public class DatabaseHelper {
 
 	// Registers a new user in the database.
 	public void register(User user) throws SQLException {
-		String insertUser = "INSERT INTO cse360users (userName, password, role) VALUES (?, ?, ?)";
+		String insertUser = "INSERT INTO cse360users (userName, password, role) VALUES (?, ?, ?, ?)";
 		try (PreparedStatement pstmt = connection.prepareStatement(insertUser)) {
 			pstmt.setString(1, user.getUserName());
 			pstmt.setString(2, user.getPassword());
 			pstmt.setString(3, user.getRole());
+			pstmt.setInt(4, user.getUserID());
 			pstmt.executeUpdate();
 		}
 	}
@@ -147,6 +151,22 @@ public class DatabaseHelper {
 	    }
 	    return null; // If no user exists or an error occurs
 	}
+	
+	// Retrieves the role of a user from the database using their UserName.
+		public int getUserID(String userName) {
+		    String query = "SELECT id FROM cse360users WHERE userName = ?";
+		    try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+		        pstmt.setString(1, userName);
+		        ResultSet rs = pstmt.executeQuery();
+		        
+		        if (rs.next()) {
+		            return rs.getInt(1); // Return the role if user exists
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		    return -1; // If no user exists or an error occurs
+		}
 	
 	public void setUserRole(String userName, String role) {
 	    String query = "UPDATE cse360users SET role = ? WHERE userName = ?";
@@ -225,11 +245,13 @@ public class DatabaseHelper {
 	        ResultSet rs = pstmt.executeQuery();
 	        
 	        if (rs.next()) {
+	        	System.out.println(rs);
 	            // Create and return a User object with the retrieved data
 	            return new User(
 	                rs.getString("userName"),
 	                rs.getString("password"),
-	                rs.getString("role")
+	                rs.getString("role"),
+	                rs.getInt(1)
 	            );
 	        }
 	    } catch (SQLException e) {
@@ -250,5 +272,61 @@ public class DatabaseHelper {
 	        e.printStackTrace();
 	    }
 	}
-
+	
+	// Add a question with author's information to the database
+	public void addQuestion(int ques_id, String question_content, int user_id, String time_created, boolean resolved) {
+		String query = "INSERT INTO Questions (ques_id, question_content, user_id, time_created, resolved) "
+				+ "VALUES (?, ?, ?, ?, ?)";
+	    try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+	        pstmt.setInt(1, ques_id);
+	        pstmt.setString(2, question_content);
+	        pstmt.setInt(3, user_id);
+	        pstmt.setString(4,  time_created);
+	        pstmt.setBoolean(5, resolved);
+	        pstmt.executeUpdate();
+	        System.out.println("Question created successfully.");
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	public ArrayList<Question> getQuestions() {
+		String query = "SELECT * FROM Questions"
+				+ " JOIN cse360users ON Questions.user_id = cse360users.id;";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+	        ResultSet rs = pstmt.executeQuery();
+	        ArrayList<Question> list = new ArrayList<Question>();
+	        while (rs.next()) {
+	        	User user = new User(
+	        		rs.getString(7),
+	        		rs.getString(8),
+	        		rs.getString(9),
+	        		rs.getInt(6)
+    			);
+	        	
+	        	list.add(new Question(
+	        		rs.getInt(1),
+	        		rs.getString(2),
+	        		user,
+	        		rs.getString(4),
+	        		rs.getBoolean(5)
+    			));
+	        }
+	        return list;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+		return null;
+	}
+	
+	public void deleteQuestion(Question question) {
+		String query = "DELETE FROM Questions WHERE ques_id = ?;";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setInt(1,  question.getId());
+	        pstmt.executeUpdate();
+	        System.out.println("Question deleted successfully.");
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
 }

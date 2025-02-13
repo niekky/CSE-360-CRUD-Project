@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
+import java.util.Random;
 
 import databasePart1.*;
 
@@ -67,7 +68,7 @@ public class AdminSetupPage {
             if (userNameStatus == "" && passwordStatus == "") {
             	 try {
                  	// Create a new User object with admin role and register in the database
-                 	User user=new User(userName, password, "admin");
+                 	User user=new User(userName, password, "admin", new Random().nextInt(100));
                      databaseHelper.register(user);
                      System.out.println("Administrator setup completed.");
                      

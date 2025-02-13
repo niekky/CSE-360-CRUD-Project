@@ -51,7 +51,6 @@ public class DiscussionMainPage {
 	    // Initialize a list containing card for listView
 	    fetchView();
 	    
-	    
 	    ListView<Question> discussionView = new ListView<Question>(cardList);
 	    
 	    // Manipulate custom card in list view
@@ -65,9 +64,14 @@ public class DiscussionMainPage {
 	    		}
                 else {
                 	Button delete = new Button("x");
+                	// Delete Question Handler
+                	delete.setOnAction(a -> {
+                		questionClass.removeQuestion(question);
+                	});
+                	
                 	Label questionLabel = new Label(question.getQuestion());
                 	questionLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-    	    		Label author = new Label("Author: " + question.getUsername());
+    	    		Label author = new Label("Author: " + question.getUser().getUserName());
     	    		Label dateCreated = new Label("Posted on: " + question.getTimeCreated());
     	    		Label tagNumber = new Label("#" + question.getId());
     	    		Label status = new Label("Status: " + question.getResolved());
@@ -112,7 +116,7 @@ public class DiscussionMainPage {
 	    	Question question = new Question(
 	    			new Random().nextInt(100),
 	    			submittedQuestion,
-	    			user.getUserName(),
+	    			user,
 	    			LocalDateTime.now().toString(),
 	    			false
     			);
