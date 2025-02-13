@@ -7,7 +7,6 @@ import databasePart1.DatabaseHelper;
 public class Answers {
 	// Variable Declaration
 	private ArrayList<Answer> answer_bank;
-	private int answers_count;
 	
 	// Constructor
 	public Answers(DatabaseHelper database, Question question) {
@@ -44,6 +43,24 @@ public class Answers {
 			}
 		}
 		return null;
+	}
+	
+	public void addAnswer(Answer answer) {
+		this.answer_bank.add(answer);
+	}
+	
+	public void removeAnswer(Answer answer) {
+		// Iterate ArrayList
+		for (int i = 0; i<this.answer_bank.size(); i++) {
+			Answer ans = this.answer_bank.get(i);
+			if (ans.getAnswerId() == ans.getAnswerId()) {
+				this.answer_bank.remove(i);
+			}
+		}
+	}
+	
+	public int getAnswerCount() {
+		return this.answer_bank.size();
 	}
 	
 }

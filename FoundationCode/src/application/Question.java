@@ -2,6 +2,7 @@ package application;
 
 import java.util.ArrayList;
 
+
 public class Question {
 	private int id;
 	// Variable Declaration
@@ -49,11 +50,5 @@ public class Question {
 	
 	public void setResolved(boolean resolved_status) {
 		this.resolved = resolved_status;
-	}
-	
-	public ArrayList<Answer> getAllAnswers(){
-		ArrayList<Answer> rs = new ArrayList<Answer>();
-		
-		return rs;
 	}
 }

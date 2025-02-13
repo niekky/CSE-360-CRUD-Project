@@ -4,6 +4,7 @@ public class Answer {
 	private int id;
 	// Variable Declaration
 	private String ans_content;
+	private String username;
 	private int question_id;
 	private String time_created;
 	private boolean read_flag;
@@ -12,14 +13,16 @@ public class Answer {
 	public Answer() {
 		this.id = -1;
 		this.ans_content = null;;
+		this.username = null;
 		this.question_id = -1;
 		this.time_created = null;
 		this.read_flag = false;			// 1: Read, 0: Unread
 	}
 	
-	public Answer(int id, String ans_content, int question_id, String time_created, boolean read_flag) {
+	public Answer(int id, String ans_content, String username, int question_id, String time_created, boolean read_flag) {
 		this.id = id;
 		this.ans_content = ans_content;
+		this.username = username;
 		this.question_id = question_id;
 		this.time_created = time_created;
 		this.read_flag = read_flag;			// 1: Read, 0: Unread
@@ -28,6 +31,10 @@ public class Answer {
 	// API Functions
 	public String getAnswer() {
 		return this.ans_content;
+	}
+	
+	public String getUsername() {
+		return this.username;
 	}
 	
 	public String getTimeCreated() {
