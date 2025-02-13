@@ -21,7 +21,6 @@ public class DiscussionAnswerPage {
 
 	private final DatabaseHelper databaseHelper;  // Store the database helper
 	private Question question;
-	private String question_sample, author_sample;
 	
 	static class AnswerCard {
 		private String answer;
@@ -71,18 +70,16 @@ public class DiscussionAnswerPage {
 	}
 	
     // Constructor to accept DatabaseHelper
-    public DiscussionAnswerPage(DatabaseHelper databaseHelper, Question question, String question_sample, String author_sample) {
+    public DiscussionAnswerPage(DatabaseHelper databaseHelper, Question question) {
         this.databaseHelper = databaseHelper;
         this.question = question;
-        this.question_sample = question_sample;
-        this.author_sample = author_sample;
     }
 
     public void show(Stage primaryStage, User user) {
 	    // Label to display page question header
-	    Label questionLabel = new Label("Question: " + this.question_sample);
+	    Label questionLabel = new Label("Question: " + this.question.getQuestion());
 	    questionLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-	    Label authorLabel = new Label("Posted by: " + this.author_sample);
+	    Label authorLabel = new Label("Posted by: " + this.question.getUsername());
 	    authorLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
 	    Label dateLabel = new Label("Created on: ");
 	    dateLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");

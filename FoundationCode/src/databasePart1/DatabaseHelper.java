@@ -34,7 +34,7 @@ public class DatabaseHelper {
 			connection = DriverManager.getConnection(DB_URL, USER, PASS);
 			statement = connection.createStatement(); 
 			// You can use this command to clear the database and restart from fresh.
-			// statement.execute("DROP ALL OBJECTS");
+//			 statement.execute("DROP ALL OBJECTS");
 
 			createTables();  // Create the necessary tables if they don't exist
 		} catch (ClassNotFoundException e) {
@@ -55,6 +55,28 @@ public class DatabaseHelper {
 	            + "code VARCHAR(10) PRIMARY KEY, "
 	            + "isUsed BOOLEAN DEFAULT FALSE)";
 	    statement.execute(invitationCodesTable);
+	    
+	    // Create the Question tables:
+	    String questionTable = "CREATE TABLE IF NOT EXISTS Questions ("
+	    		+ "ques_id INT AUTO_INCREMENT PRIMARY KEY, "
+	    		+ "question_content VARCHAR(255), "
+	    		+ "user_id INT, "
+	    		+ "time_created VARCHAR(255), "
+	    		+ "resolved BOOLEAN, "
+	    		+ "FOREIGN KEY (user_id) REFERENCES cse360users(id))";
+	    statement.execute(questionTable);
+	    
+	    // Create the Table tables:
+	    String answerTable = "CREATE TABLE IF NOT EXISTS Answers ("
+	    		+ "ans_id INT AUTO_INCREMENT PRIMARY KEY, "
+	    		+ "answer_content VARCHAR(255), "
+	    		+ "ques_id INT, "
+	    		+ "user_id INT, "
+	    		+ "time_created VARCHAR(255), "
+	    		+ "read BOOLEAN, "
+	    		+ "FOREIGN KEY (user_id) REFERENCES cse360users(id), "
+	    		+ "FOREIGN KEY (ques_id) REFERENCES Questions(ques_id))";
+	    statement.execute(answerTable);
 	}
 
 
