@@ -4,26 +4,17 @@ public class Answer {
 	private int id;
 	// Variable Declaration
 	private String ans_content;
-	private String username;
-	private int question_id;
+	private User user;
+	private Question question;
 	private String time_created;
 	private boolean read_flag;
 	
 	// Constructor
-	public Answer() {
-		this.id = -1;
-		this.ans_content = null;;
-		this.username = null;
-		this.question_id = -1;
-		this.time_created = null;
-		this.read_flag = false;			// 1: Read, 0: Unread
-	}
-	
-	public Answer(int id, String ans_content, String username, int question_id, String time_created, boolean read_flag) {
+	public Answer(int id, String ans_content, User user, Question question, String time_created, boolean read_flag) {
 		this.id = id;
 		this.ans_content = ans_content;
-		this.username = username;
-		this.question_id = question_id;
+		this.user = user;
+		this.question = question;
 		this.time_created = time_created;
 		this.read_flag = read_flag;			// 1: Read, 0: Unread
 	}
@@ -33,8 +24,8 @@ public class Answer {
 		return this.ans_content;
 	}
 	
-	public String getUsername() {
-		return this.username;
+	public User getUser() {
+		return this.user;
 	}
 	
 	public String getTimeCreated() {
@@ -45,8 +36,8 @@ public class Answer {
 		return this.id;
 	}
 	
-	public int getQuestionId() {
-		return this.question_id;
+	public Question getQuestion() {
+		return this.question;
 	}
 	
 	public boolean getReadStatus() {

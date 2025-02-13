@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -70,12 +71,36 @@ public class DiscussionMainPage {
                 	});
                 	
                 	Label questionLabel = new Label(question.getQuestion());
+                	
+                	
                 	questionLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
     	    		Label author = new Label("Author: " + question.getUser().getUserName());
     	    		Label dateCreated = new Label("Posted on: " + question.getTimeCreated());
     	    		Label tagNumber = new Label("#" + question.getId());
-    	    		Label status = new Label("Status: " + question.getResolved());
-    	    		VBox cardBox = new VBox(5, questionLabel, author, dateCreated, tagNumber, delete);
+    	    		
+    	    		// Status layout
+    	    		Label statusLabel = new Label("Resolved: ");
+    	    		Button resolveStatus = new Button();
+    	    		    	    		
+    	    		if (!question.getResolved()) {
+    	    			resolveStatus.setText("Active");
+    	    			
+    	    			// Button to mark status to resolve event handler
+    	    			resolveStatus.setOnAction(a -> {
+    	    				// If already check, do nothing. Otherwise, update read status on DB.
+        	    			if (!question.getResolved()) {
+        	    				databaseHelper.updateQuestionStatus(question);
+        	    				resolveStatus.setText("Resolved");
+        	    			}
+    	    			});
+    	    			
+    	    		} else {
+    	    			resolveStatus.setText("Resolved");
+    	    		}
+    	    		
+    	    		HBox readLayout = new HBox(statusLabel, resolveStatus);
+    	    		
+    	    		VBox cardBox = new VBox(5, questionLabel, author, dateCreated, tagNumber, readLayout, delete);
     	    		setGraphic(cardBox);
                 }
 	    		

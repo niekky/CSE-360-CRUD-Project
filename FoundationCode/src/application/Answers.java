@@ -7,29 +7,19 @@ import databasePart1.DatabaseHelper;
 public class Answers {
 	// Variable Declaration
 	private ArrayList<Answer> answer_bank;
-	
+	private DatabaseHelper database;
 	// Constructor
 	public Answers(DatabaseHelper database, Question question) {
 		ArrayList<Answer> rs = new ArrayList<Answer>();
+		this.database = database;
 		
 		// Request API to retrieve questions
-		
-		// Iterate through the polled data
-				
+		rs = this.database.getAnswers(question);
+
 		this.answer_bank = rs;
 	}
 	
-	// API Functions
-	public void fetchQuestions(){
-		ArrayList<Answer> rs = new ArrayList<Answer>();
-		
-		// Request API to retrieve questions
-		
-		// Iterate through the polled data
-		
-		this.answer_bank = rs;
-	}
-	
+	// API Functions	
 	public ArrayList<Answer> getAllAnswers(){
 		return this.answer_bank;
 	}
@@ -47,6 +37,7 @@ public class Answers {
 	
 	public void addAnswer(Answer answer) {
 		this.answer_bank.add(answer);
+		this.database.addAnswer(answer);
 	}
 	
 	public void removeAnswer(Answer answer) {
@@ -54,6 +45,7 @@ public class Answers {
 		for (int i = 0; i<this.answer_bank.size(); i++) {
 			Answer ans = this.answer_bank.get(i);
 			if (ans.getAnswerId() == ans.getAnswerId()) {
+				this.database.deleteAnswer(answer);
 				this.answer_bank.remove(i);
 			}
 		}

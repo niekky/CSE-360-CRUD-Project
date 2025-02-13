@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import application.Answer;
 import application.Question;
 import application.Questions;
 import application.User;
@@ -290,6 +291,7 @@ public class DatabaseHelper {
 	    }
 	}
 	
+	// Retrieve all questions including authors of post.
 	public ArrayList<Question> getQuestions() {
 		String query = "SELECT * FROM Questions"
 				+ " JOIN cse360users ON Questions.user_id = cse360users.id;";
@@ -319,6 +321,7 @@ public class DatabaseHelper {
 		return null;
 	}
 	
+	// Delete a question in the database
 	public void deleteQuestion(Question question) {
 		String query = "DELETE FROM Questions WHERE ques_id = ?;";
 		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -329,4 +332,94 @@ public class DatabaseHelper {
 	        e.printStackTrace();
 	    }
 	}
+	
+	// Update question's resolve status in the database
+	public void updateQuestionStatus(Question question) {
+		String query = "UPDATE Questions SET resolved = ? WHERE ques_id = ?";
+	    try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+	        pstmt.setBoolean(1, true);
+	        pstmt.setInt(2, question.getId());
+	        pstmt.executeUpdate();
+	        System.out.println("Question status updated successfully.");
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	// Add a answer with the question and answer's author information to the database
+	public void addAnswer(Answer answer) {
+		String query = "INSERT INTO Answers (ans_id, answer_content, ques_id, user_id, time_created, read) "
+				+ "VALUES (?, ?, ?, ?, ?, ?)";
+	    try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+	        pstmt.setInt(1, answer.getAnswerId());
+	        pstmt.setString(2, answer.getAnswer());
+	        pstmt.setInt(3, answer.getQuestion().getId());
+	        pstmt.setInt(4,  answer.getUser().getUserID());
+	        pstmt.setString(5, answer.getTimeCreated());
+	        pstmt.setBoolean(6, answer.getReadStatus());
+	        pstmt.executeUpdate();
+	        System.out.println("Answer created successfully.");
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	// Retrieve all answers of a questions.
+	public ArrayList<Answer> getAnswers(Question question) {
+		String query = "SELECT * FROM Answers"
+				+ " JOIN cse360users ON Answers.user_id = cse360users.id"
+				+ " WHERE Answers.ques_id = ?;"; // Only allows users in the question discussion
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+	        pstmt.setInt(1, question.getId());
+	        ResultSet rs = pstmt.executeQuery();
+	        ArrayList<Answer> list = new ArrayList<Answer>();
+	        while (rs.next()) {
+	        	User user = new User(
+	        		rs.getString(8),
+	        		rs.getString(9),
+	        		rs.getString(10),
+	        		rs.getInt(7)
+    			);
+	        	
+	        	list.add(new Answer(
+	        		rs.getInt(1),
+	        		rs.getString(2),
+	        		user,
+	        		question,
+	        		rs.getString(5),
+	        		rs.getBoolean(6)
+    			));
+	        }
+	        return list;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+		return null;
+	}
+	
+	// Delete an answer in the database
+	public void deleteAnswer(Answer answer) {
+		String query = "DELETE FROM Answers WHERE ans_id = ?;";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setInt(1,  answer.getAnswerId());
+	        pstmt.executeUpdate();
+	        System.out.println("Answer deleted successfully.");
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	// Update question's resolve status in the database
+	public void updateAnswerStatus(Answer answer) {
+		String query = "UPDATE Answers SET read = ? WHERE ans_id = ?";
+	    try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+	        pstmt.setBoolean(1, true);
+	        pstmt.setInt(2, answer.getAnswerId());
+	        pstmt.executeUpdate();
+	        System.out.println("Answer status updated successfully.");
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+
 }

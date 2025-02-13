@@ -70,20 +70,36 @@ public class DiscussionAnswerPage {
 	    		}
                 else {
                 	Button delete = new Button("x");
+                	// Delete Question Handler
+                	delete.setOnAction(a -> {
+                		answerClass.removeAnswer(answer);
+                	});
                 	Label answerLabel = new Label(answer.getAnswer());
                 	answerLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-    	    		Label author = new Label("Author: " + answer.getUsername());
+    	    		Label author = new Label("Author: " + answer.getUser().getUserName());
     	    		Label dateCreated = new Label("Posted on: " + answer.getTimeCreated());
-    	    		Label statusLabel = new Label("Read ");
-    	    		CheckBox readCheckBox = new CheckBox();
     	    		
-    	    		readCheckBox.setIndeterminate(answer.getReadStatus());
-    	    		
-    	    		if (readCheckBox.isSelected()) {
-    	    			// If already check, do nothing. Otherwise, update read status on DB.
+    	    		// Status layout
+    	    		Label statusLabel = new Label("Status: ");
+    	    		Button readStatus = new Button();
+    	    		    	    		
+    	    		if (!answer.getReadStatus()) {
+	    				readStatus.setText("Unread");
+    	    			
+    	    			// Button to mark status to resolve event handler
+	    				readStatus.setOnAction(a -> {
+    	    				// If already check, do nothing. Otherwise, update read status on DB.
+        	    			if (!answer.getReadStatus()) {
+        	    				databaseHelper.updateAnswerStatus(answer);
+        	    				readStatus.setText("Read");
+        	    			}
+    	    			});
+    	    			
+    	    		} else {
+    	    			readStatus.setText("Read");
     	    		}
     	    		
-    	    		HBox readLayout = new HBox(statusLabel, readCheckBox);
+    	    		HBox readLayout = new HBox(statusLabel, readStatus);
     	    		VBox cardBox = new VBox(5, answerLabel, author, dateCreated, readLayout, delete);
     	    		setGraphic(cardBox);
                 }
@@ -115,8 +131,8 @@ public class DiscussionAnswerPage {
 	    	Answer answer = new Answer(
 	    			new Random().nextInt(100),
 	    			submittedAnswer,
-	    			user.getUserName(),
-	    			this.question.getId(),
+	    			user,
+	    			this.question,
 	    			LocalDateTime.now().toString(),
 	    			false
     			);
