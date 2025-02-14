@@ -136,22 +136,28 @@ public class DiscussionMainPage {
 	    	String submittedQuestion = questionInput.getText();
 	    	
 	    	// Validate user input and log status to app console
+	    	TextInputEvaluator evaluator = new TextInputEvaluator();
+	    	String status_str = evaluator.evaluateTextInput(submittedQuestion);
 	    	
-	    	// Initialize new Question object
-	    	Question question = new Question(
-	    			new Random().nextInt(100),
-	    			submittedQuestion,
-	    			user,
-	    			LocalDateTime.now().toString(),
-	    			false
-    			);
-	    	
-	    	this.questionClass.addQuestion(question);
-	    	
-	    	fetchView();
-	    	
-	    	// Clear input field
-	    	questionInput.setText("");
+	    	if (status_str == "") {
+	    		// Initialize new Question object
+		    	Question question = new Question(
+		    			new Random().nextInt(100),
+		    			submittedQuestion,
+		    			user,
+		    			LocalDateTime.now().toString(),
+		    			false
+	    			);
+		    	
+		    	this.questionClass.addQuestion(question);
+		    	
+		    	fetchView();
+		    	
+		    	// Clear input field
+		    	questionInput.setText("");
+	    	} else {
+	    		System.out.println("Input Err: " + status_str);
+	    	}
 	    });
 	    
 	    HBox questionInputLayout = new HBox(new Label("Type your question: "), questionInput, submitBtn);

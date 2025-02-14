@@ -16,9 +16,6 @@ public class CRUD_testing {
 	
 	
 	public static void main(String[] args) {
-		Questions questionClass = new Questions(databaseHelper);
-		User user1 = databaseHelper.getUser("tnguy231");
-		User user2 = databaseHelper.getUser("tnguy232");
 		Question ques1 = new Question(
 				500,
 				"This is a testing question?",

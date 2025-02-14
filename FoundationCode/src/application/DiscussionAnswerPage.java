@@ -51,7 +51,7 @@ public class DiscussionAnswerPage {
 	    questionLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
 	    Label authorLabel = new Label("Posted by: " + this.question.getUser().getUserName());
 	    authorLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-	    Label dateLabel = new Label("Created on: ");
+	    Label dateLabel = new Label("Created on: " + this.question.getTimeCreated());
 	    dateLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
 	    
 	    // Initialize a list containing card for listView
@@ -126,23 +126,29 @@ public class DiscussionAnswerPage {
 	    	String submittedAnswer = answerInput.getText();
 	    	
 	    	// Validate user input and log status to app console
+	    	TextInputEvaluator evaluator = new TextInputEvaluator();
+	    	String status_str = evaluator.evaluateTextInput(submittedAnswer);
+	    	if (status_str=="") {
+	    		// Initialize new Question object
+		    	Answer answer = new Answer(
+		    			new Random().nextInt(100),
+		    			submittedAnswer,
+		    			user,
+		    			this.question,
+		    			LocalDateTime.now().toString(),
+		    			false
+	    			);
+		    	
+		    	this.answerClass.addAnswer(answer);
+		    	
+		    	fetchView();
+		    	
+		    	// Clear input field
+		    	answerInput.setText("");
+	    	} else {
+	    		System.out.println("Input Err: " + status_str);
+	    	}
 	    	
-	    	// Initialize new Question object
-	    	Answer answer = new Answer(
-	    			new Random().nextInt(100),
-	    			submittedAnswer,
-	    			user,
-	    			this.question,
-	    			LocalDateTime.now().toString(),
-	    			false
-    			);
-	    	
-	    	this.answerClass.addAnswer(answer);
-	    	
-	    	fetchView();
-	    	
-	    	// Clear input field
-	    	answerInput.setText("");
 	    });
 	    
 	    HBox answerInputLayout = new HBox(new Label("Type your answer: "), answerInput, submitBtn);
