@@ -322,12 +322,15 @@ public class DatabaseHelper {
 	}
 	
 	// Delete a question in the database
-	public void deleteQuestion(Question question) {
-		String query = "DELETE FROM Questions WHERE ques_id = ?;";
+	public void deleteQuestion(Question question, User user) {
+		String query = "DELETE FROM Questions WHERE ques_id = ? AND user_id = ?;";
 		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
 			pstmt.setInt(1,  question.getId());
+			pstmt.setInt(2, user.getUserID());
 	        pstmt.executeUpdate();
-	        System.out.println("Question deleted successfully.");
+	        if (question.getUser().getUserID() == user.getUserID())
+	        	System.out.println("Question deleted successfully.");
+	        else System.out.println("Cannot delete other user's question!");
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }

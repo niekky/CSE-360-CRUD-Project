@@ -51,12 +51,12 @@ public class Questions {
 			);
 	}
 	
-	public void removeQuestion(Question question) {
+	public void removeQuestion(Question question, User user) {
 		// Iterate ArrayList
 		for (int i = 0; i<this.question_bank.size(); i++) {
 			Question ques = this.question_bank.get(i);
 			if (ques.getId() == question.getId()) {
-				database.deleteQuestion(this.question_bank.get(i));
+				database.deleteQuestion(this.question_bank.get(i), user);
 				this.question_bank.remove(i);
 			}
 		}

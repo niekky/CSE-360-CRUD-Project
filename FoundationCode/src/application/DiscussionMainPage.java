@@ -67,7 +67,7 @@ public class DiscussionMainPage {
                 	Button delete = new Button("x");
                 	// Delete Question Handler
                 	delete.setOnAction(a -> {
-                		questionClass.removeQuestion(question);
+                		questionClass.removeQuestion(question, user);
                 	});
                 	
                 	Label questionLabel = new Label(question.getQuestion());
